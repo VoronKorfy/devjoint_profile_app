@@ -9,14 +9,13 @@ import 'package:devjoint_profile_app/widgets/user_header_card.dart';
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
-  // mock data for presentation
   static const mockUser = UserProfile(
     name: 'FuadEliyevFlutterDeveloper2026SuperLongUsername',
     email:
-        'fuad.eliyev.flutter.mobile.super.long.idk.what.to.write.lol.developer@gmail.com',
+    'fuad.eliyev.flutter.mobile.super.long.idk.what.to.write.lol.developer@gmail.com',
     phone: '+994 50 123 45 67',
     bio:
-        'Passionate Flutter developer who loves building beautiful and functional apps.',
+    'Passionate Flutter developer who loves building beautiful and functional apps.',
     avatarUrl: '',
     projectsCount: 24,
     likesCount: 128,
@@ -26,20 +25,21 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
 
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20.0,
+            padding: EdgeInsets.symmetric(
+              horizontal: mediaQuery.size.width > 600 ? 32.0 : 20.0,
               vertical: 16.0,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // top header with title and bell icon
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -62,13 +62,44 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
 
-                // user profile card
                 const UserHeaderCard(user: mockUser),
                 const SizedBox(height: 20),
 
-                // stats section using layoutbuilder for adaptability
+                // Adaptive stats widget using LayoutBuilder constraints
                 LayoutBuilder(
                   builder: (context, constraints) {
+                    final isWide = constraints.maxWidth > 500;
+
+                    if (isWide) {
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: StatCard(
+                              label: 'Projects',
+                              value: mockUser.projectsCount.toString(),
+                              icon: Icons.people_outline,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: StatCard(
+                              label: 'Likes',
+                              value: mockUser.likesCount.toString(),
+                              icon: Icons.favorite_border,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: StatCard(
+                              label: 'Badges',
+                              value: mockUser.badgesCount.toString(),
+                              icon: Icons.star_border,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+
                     return Row(
                       children: [
                         Expanded(
@@ -100,7 +131,6 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
 
-                // menu label
                 const Text(
                   'Menu',
                   style: TextStyle(
@@ -111,7 +141,6 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
 
-                // options list container
                 Container(
                   decoration: BoxDecoration(
                     color: theme.colorScheme.surface,
@@ -169,7 +198,6 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
 
-                // logout action
                 CustomButton(text: 'Log Out', onPressed: () => context.go('/')),
                 const SizedBox(height: 20),
               ],
@@ -177,7 +205,6 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
       ),
-      // bottom bar matching design specification
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 4,
         type: BottomNavigationBarType.fixed,
