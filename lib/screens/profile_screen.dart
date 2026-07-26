@@ -65,40 +65,11 @@ class ProfileScreen extends StatelessWidget {
                 const UserHeaderCard(user: mockUser),
                 const SizedBox(height: 20),
 
-                // Adaptive stats widget using LayoutBuilder constraints
+                // Adaptive stats widget utilizing LayoutBuilder constraints & MediaQuery orientation
                 LayoutBuilder(
                   builder: (context, constraints) {
-                    final isWide = constraints.maxWidth > 500;
-
-                    if (isWide) {
-                      return Row(
-                        children: [
-                          Expanded(
-                            child: StatCard(
-                              label: 'Projects',
-                              value: mockUser.projectsCount.toString(),
-                              icon: Icons.people_outline,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: StatCard(
-                              label: 'Likes',
-                              value: mockUser.likesCount.toString(),
-                              icon: Icons.favorite_border,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: StatCard(
-                              label: 'Badges',
-                              value: mockUser.badgesCount.toString(),
-                              icon: Icons.star_border,
-                            ),
-                          ),
-                        ],
-                      );
-                    }
+                    final isWide = constraints.maxWidth > 500 || isLandscape;
+                    final spacing = isWide ? 16.0 : 12.0;
 
                     return Row(
                       children: [
@@ -109,7 +80,7 @@ class ProfileScreen extends StatelessWidget {
                             icon: Icons.people_outline,
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        SizedBox(width: spacing),
                         Expanded(
                           child: StatCard(
                             label: 'Likes',
@@ -117,7 +88,7 @@ class ProfileScreen extends StatelessWidget {
                             icon: Icons.favorite_border,
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        SizedBox(width: spacing),
                         Expanded(
                           child: StatCard(
                             label: 'Badges',
