@@ -5,31 +5,48 @@ import 'package:devjoint_profile_app/widgets/onboarding_item.dart';
 import 'package:devjoint_profile_app/widgets/page_indicator.dart';
 import 'package:devjoint_profile_app/widgets/custom_button.dart';
 
-class OnboardingScreen extends StatelessWidget {
-  OnboardingScreen({super.key});
+class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
 
-  // controller and index tracker for smooth sliding
-  final PageController _pageController = PageController();
-  final ValueNotifier<int> _currentPageNotifier = ValueNotifier<int>(0);
+  @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
 
-  // static onboarding content
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  late final PageController _pageController;
+  late final ValueNotifier<int> _currentPageNotifier;
+
   final List<OnboardingPage> _pages = const [
     OnboardingPage(
       title: 'Manage your profile easily',
       description:
-          'All your information in one place. Keep track and update anytime.',
+      'All your information in one place. Keep track and update anytime.',
     ),
     OnboardingPage(
       title: 'Showcase Your Work',
       description:
-          'Build an impressive profile and highlight your latest Flutter apps.',
+      'Build an impressive profile and highlight your latest Flutter apps.',
     ),
     OnboardingPage(
       title: 'Stay Updated',
       description:
-          'Customize your settings, preferences, and notifications effortlessly.',
+      'Customize your settings, preferences, and notifications effortlessly.',
     ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+    _currentPageNotifier = ValueNotifier<int>(0);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _currentPageNotifier.dispose();
+    super.dispose();
+  }
 
   void _onNext(BuildContext context) {
     if (_currentPageNotifier.value < _pages.length - 1) {
@@ -38,7 +55,6 @@ class OnboardingScreen extends StatelessWidget {
         curve: Curves.easeInOut,
       );
     } else {
-      // finished onboarding, move to profile
       context.go('/profile');
     }
   }
@@ -49,7 +65,6 @@ class OnboardingScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            // skip button on top right
             Padding(
               padding: const EdgeInsets.only(right: 16.0, top: 8.0),
               child: Align(
@@ -66,8 +81,6 @@ class OnboardingScreen extends StatelessWidget {
                 ),
               ),
             ),
-
-            // main slider section
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
@@ -80,8 +93,6 @@ class OnboardingScreen extends StatelessWidget {
                 },
               ),
             ),
-
-            // bottom area with page dots and action button
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 24.0,
