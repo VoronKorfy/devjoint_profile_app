@@ -8,7 +8,6 @@ import 'package:devjoint_profile_app/widgets/user_header_card.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
-
   static const mockUser = UserProfile(
     name: 'FuadEliyevFlutterDeveloper2026SuperLongUsername',
     email:
